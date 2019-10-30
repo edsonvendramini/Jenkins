@@ -2,7 +2,7 @@ if (params.Continuar != 'Sim') {
 	currentBuild.result = 'UNSTABLE'
 } else {
 	node {
-		def String[] var_arquivarEstag = ['Estagio 1.txt','Estagio 2.txt','Estagio 3.txt']
+		def String[] var_arquivarEstag = ['Estagio 1.txt','Estagio 2.txt','Estagio 2.1.txt','Estagio 2.2.txt','Estagio 2.3.txt','Estagio 3.txt']
         def nomeEstagio = ''
 
         ansiColor('xterm') {
@@ -17,6 +17,15 @@ if (params.Continuar != 'Sim') {
                 stage(nomeEstagio) {
                     echo 'Iniciando ' + nomeEstagio
                     writeFile file:nomeEstagio + '.txt', text:nomeEstagio, encoding:'UTF-8'
+                    parallel (
+                        (nomeEstagio + '.1'): {
+                            writeFile file:nomeEstagio + '.1.txt', text:nomeEstagio + '.1', encoding:'UTF-8'
+                        }, (nomeEstagio + '.2'): {
+                            writeFile file:nomeEstagio + '.2.txt', text:nomeEstagio + '.2', encoding:'UTF-8'
+                        }, (nomeEstagio + '.3'): {
+                            writeFile file:nomeEstagio + '.3.txt', text:nomeEstagio + '.3', encoding:'UTF-8'
+                        }
+                    )
                     echo nomeEstagio + ' Concluido'
                 }
                 nomeEstagio = 'Estagio 3'
